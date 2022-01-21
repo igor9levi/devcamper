@@ -8,10 +8,13 @@ const bootcamps = require('./routes/bootcamps');
 
 dotenv.config();
 
-const app = express();
-
 // Connect to database
 connectDB();
+
+const app = express();
+
+// Body parser
+app.use(express.json());
 
 // Middlewares - MUST BE ORDERED before routes !!!
 // Reads NODE_ENV from .env
