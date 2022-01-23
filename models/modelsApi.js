@@ -38,3 +38,19 @@ exports.createRecord = async (modelKey, { payload }) => {
 
   return modelInstance;
 };
+
+exports.updateRecord = async (modelKey, { id, payload, ...options }) => {
+  const Model = getModel(modelKey);
+
+  const modelInstance = Model.findByIdAndUpdate(id, payload, { ...options });
+
+  return modelInstance;
+};
+
+exports.deleteRecord = async (modelKey, { id }) => {
+  const Model = getModel(modelKey);
+
+  const modelInstance = Model.findByIdAndRemove(id);
+
+  return modelInstance;
+};
