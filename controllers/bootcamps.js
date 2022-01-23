@@ -1,4 +1,4 @@
-const Bootcamp = require('../models/Bootcamp');
+const { createRecord } = require('../models/modelsApi');
 
 // @desc      Get all bootcamps
 // @route     GET /api/v1/bootcamps
@@ -19,9 +19,16 @@ exports.getBootcamp = (req, res, next) => {
 // @desc      Create new bootcamp
 // @route     POST /api/v1/bootcamps
 // @access    Private
-exports.createBootcamp = (req, res, next) => {
+exports.createBootcamp = async (req, res, next) => {
   console.log('my body: ', req.body);
-  res.status(200).json({ success: true, msg: 'Create new bootcamp' });
+  try {
+    // TODO: refactor this to error handler wrapper
+    const bootcamp = await createRecord('bootcamp', { payload: req.body });
+    res.status(201).json({ success: true, data: bootcamp });
+  } catch (err) {
+    console.log(err); // TODO: add logger
+    res.status(400).json({ success: false, err, data: {} });
+  }
 };
 
 // @desc      Update bootcamp
