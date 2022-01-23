@@ -15,7 +15,9 @@ exports.getBootcamps = async (req, res, next) => {
   try {
     const bootcamps = await findAll(bootcamp);
 
-    res.status(200).json({ success: true, data: bootcamps });
+    res
+      .status(200)
+      .json({ success: true, count: bootcamps.length, data: bootcamps });
   } catch (error) {
     console.log(error); // TODO: add logger
 
