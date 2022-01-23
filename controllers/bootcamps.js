@@ -87,7 +87,7 @@ exports.updateBootcamp = async (req, res, next) => {
       });
     }
 
-    res.status(204).json({ success: true, data: bootcamp });
+    res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
     console.log(error); // TODO: add logger
 
@@ -111,7 +111,7 @@ exports.deleteBootcamp = async (req, res, next) => {
       });
     }
 
-    res.status(202).json({ success: true, data: bootcamp });
+    res.status(200).json({ success: true, data: {} });
   } catch (error) {
     console.log(error); // TODO: add logger
 
