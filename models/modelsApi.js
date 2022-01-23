@@ -1,7 +1,8 @@
 const Bootcamp = require('./Bootcamp');
+const { modelKeys } = require('./const');
 
 const models = {
-  bootcamp: Bootcamp,
+  [modelKeys.bootcamp]: Bootcamp,
 };
 
 const getModel = (modelKey) => {
@@ -12,6 +13,22 @@ const getModel = (modelKey) => {
   } else {
     return Model;
   }
+};
+
+exports.findAll = async (modelKey) => {
+  const Model = getModel(modelKey);
+
+  const modelInstance = Model.find();
+
+  return modelInstance;
+};
+
+exports.findRecord = async (modelKey, { id }) => {
+  const Model = getModel(modelKey);
+
+  const modelInstance = Model.findById(id);
+
+  return modelInstance;
 };
 
 exports.createRecord = async (modelKey, { payload }) => {

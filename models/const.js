@@ -1,0 +1,3 @@
+exports.modelKeys = {
+  bootcamp: 'Bootcamp',
+};
