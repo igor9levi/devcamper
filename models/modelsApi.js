@@ -50,7 +50,7 @@ exports.updateRecord = async (modelKey, { id, payload, ...options }) => {
 exports.deleteRecord = async (modelKey, { id }) => {
   const Model = getModel(modelKey);
 
-  const modelInstance = Model.findByIdAndRemove(id);
+  const modelInstance = Model.findByIdAndDelete(id);
 
   return modelInstance;
 };
