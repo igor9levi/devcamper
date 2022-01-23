@@ -21,7 +21,8 @@ exports.getBootcamps = async (req, res, next) => {
   } catch (error) {
     console.log(error); // TODO: add logger
 
-    res.status(400).json({ success: false, error, data: {} });
+    // res.status(400).json({ success: false, error, data: {} });
+    next(error);
   }
 };
 

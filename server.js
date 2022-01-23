@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 
+// Middlewares
+const errorHandler = require('./middlewares/error');
+
 // Routes
 const bootcamps = require('./routes/bootcamps');
 
@@ -24,6 +27,9 @@ if (process.env.NODE_ENV === 'dev') {
 
 // Mount routes
 app.use('/api/v1/bootcamps', bootcamps);
+
+// Error middleware - all middlewares executed in linear order
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 
