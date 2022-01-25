@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === 'dev') {
 app.use('/api/v1/bootcamps', bootcamps);
 
 // Error middleware - all middlewares executed in linear order
+// thus needs to be after routes handler middleware
 app.use(errorHandler);
 
 const PORT = process.env.PORT;

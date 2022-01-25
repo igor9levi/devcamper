@@ -1,3 +1,4 @@
+const ErrorResponse = require('../utils/errorResponse');
 const {
   createRecord,
   findRecord,
@@ -19,10 +20,10 @@ exports.getBootcamps = async (req, res, next) => {
       .status(200)
       .json({ success: true, count: bootcamps.length, data: bootcamps });
   } catch (error) {
-    console.log(error); // TODO: add logger
+    // console.log(error); // TODO: add logger
 
     // res.status(400).json({ success: false, error, data: {} });
-    next(error);
+    next(new ErrorResponse(`Error: Could not fetch bootcamps`, 404));
   }
 };
 
@@ -35,23 +36,26 @@ exports.getBootcamp = async (req, res, next) => {
 
     if (!bootcampRecord) {
       // todo: repeated 3x abstract this to function
-      return res.status(400).json({
-        success: false,
-        data: {},
-        error: { message: `No record with id: ${req.params.id}` },
-      });
+      return next(
+        new ErrorResponse(
+          `Error: Bootcamp not found for given id of ${req.params.id}. Not in db.`,
+          404
+        )
+      );
     }
 
     // todo: make return status generator function
     res.status(200).json({ success: true, data: bootcampRecord });
   } catch (error) {
-    console.log(error); // TODO: add logger
+    // console.log(error); // TODO: add logger
 
-    res.status(400).json({ success: false, error, data: {} });
+    next(
+      new ErrorResponse(
+        `Error: Bootcamp not found for given id of ${req.params.id}`,
+        404
+      )
+    );
   }
-  res
-    .status(200)
-    .json({ success: true, msg: `Getting ${req.params.id} bootcamp` });
 };
 
 // @desc      Create new bootcamp
