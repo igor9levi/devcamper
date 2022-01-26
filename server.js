@@ -42,7 +42,7 @@ const server = app.listen(PORT, () =>
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`);
+  console.log(`Error Unhandled Rejection: ${err.message}`);
   // Close server & exit process
   // server.close(() => process.exit(1));
 });
