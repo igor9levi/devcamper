@@ -40,53 +40,44 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/bootcamps
 // @access    Private
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await createRecord(bootcamp, { payload: req.body });
+  const bootcampRecord = await createRecord(bootcamp, { payload: req.body });
 
-  res.status(201).json({ success: true, data: bootcamp });
+  res.status(201).json({ success: true, data: bootcampRecord });
 });
 
 // @desc      Update bootcamp
 // @route     PUT /api/v1/bootcamps/:id
 // @access    Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await updateRecord(bootcamp, {
+  const bootcampRecord = await updateRecord(bootcamp, {
+    // returns old value, not new ??
     payload: req.body,
     id: req.params.id,
     options: { new: true, runValidators: true },
   });
 
-  if (!bootcamp) {
+  if (!bootcampRecord) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
-    // return res.status(400).json({
-    //   success: false,
-    //   data: {},
-    //   error: { message: `No record with id: ${req.params.id}` },
-    // });
   }
 
-  res.status(200).json({ success: true, data: bootcamp });
+  res.status(200).json({ success: true, data: bootcampRecord });
 });
 
 // @desc      Delete bootcamp
 // @route     DELETE /api/v1/bootcamp/:id
 // @access    Public
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await deleteRecord(bootcamp, { payload: req.body });
+  const bootcampRecord = await deleteRecord(bootcamp, { payload: req.body });
 
-  if (!bootcamp) {
+  if (!bootcampRecord) {
     return next(
       new ErrorResponse(
         `Error: Bootcamp not found for given id of ${req.params.id}. Not in db.`,
         404
       )
     );
-    // return res.status(400).json({
-    //   success: false,
-    //   data: {},
-    //   error: { message: `No record with id: ${req.params.id}` },
-    // });
   }
 
   res.status(200).json({ success: true, data: {} });
