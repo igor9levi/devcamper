@@ -48,7 +48,9 @@ exports.updateRecord = async (modelKey, { id, payload, ...options }) => {
 };
 
 exports.deleteRecord = async (modelKey, { id }) => {
+  console.log('modelKey', modelKey);
   const Model = getModel(modelKey);
+  console.log('check model: ', Model);
 
   const modelInstance = Model.findByIdAndDelete(id);
 
