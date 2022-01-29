@@ -50,7 +50,7 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   const bootcampRecord = await updateRecord(bootcamp, {
-    // returns old value, not new ??
+    // TODO: returns old value, not new ??
     payload: req.body,
     id: req.params.id,
     options: { new: true, runValidators: true },

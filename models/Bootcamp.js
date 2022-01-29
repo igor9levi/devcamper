@@ -109,6 +109,9 @@ const BootcampSchema = new mongoose.Schema({
 // Use regular function as param in order to correctly bind "this"
 BootcampSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
+
+  // In order to skip some props being save in DB should set it's value to undefined:
+  // e.g. this.address = undefined;
   next();
 });
 
