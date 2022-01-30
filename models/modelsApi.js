@@ -1,8 +1,10 @@
 const Bootcamp = require('./Bootcamp');
+const Course = require('./Course');
 const { modelKeys } = require('./const');
 
 const models = {
   [modelKeys.bootcamp]: Bootcamp,
+  [modelKeys.course]: Course,
 };
 
 const getModel = (modelKey) => {

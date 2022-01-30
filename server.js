@@ -8,6 +8,7 @@ const errorHandler = require('./middlewares/error');
 
 // Routes
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 // Mount routes
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
 
 // Error middleware - all middlewares executed in linear order
 // thus needs to be after routes handler middleware
