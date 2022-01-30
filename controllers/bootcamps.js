@@ -14,7 +14,9 @@ const { bootcamp } = modelKeys;
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  const bootcamps = await findAll(bootcamp);
+  console.log(req.query);
+
+  const bootcamps = await findAll(bootcamp, { query: req.query });
 
   res
     .status(200)

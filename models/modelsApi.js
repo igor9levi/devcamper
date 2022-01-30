@@ -15,10 +15,10 @@ const getModel = (modelKey) => {
   }
 };
 
-exports.findAll = async (modelKey) => {
+exports.findAll = async (modelKey, { query }) => {
   const Model = getModel(modelKey);
 
-  const modelInstance = Model.find();
+  const modelInstance = Model.find(query);
 
   return modelInstance;
 };
