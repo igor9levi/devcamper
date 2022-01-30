@@ -7,8 +7,7 @@ const {
   updateRecord,
   deleteRecord,
 } = require('../models/modelsApi');
-const { modelKeys } = require('../models/const');
-const { bootcamp } = modelKeys;
+const Bootcamp = require('../models/Bootcamp');
 
 // @desc      Get all bootcamps
 // @route     GET /api/v1/bootcamps
@@ -16,7 +15,7 @@ const { bootcamp } = modelKeys;
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   console.log(req.query);
 
-  const bootcamps = await findAll(bootcamp, { query: req.query });
+  const bootcamps = await Bootcamp.find(req.query);
 
   res
     .status(200)
@@ -27,7 +26,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/bootcamps/:id
 // @access    Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcampRecord = await findRecord(bootcamp, { id: req.params.id });
+  const bootcampRecord = await Bootcamp.findById(req.params.id);
 
   if (!bootcampRecord) {
     return next(
@@ -42,7 +41,7 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/bootcamps
 // @access    Private
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcampRecord = await createRecord(bootcamp, { payload: req.body });
+  const bootcampRecord = await Bootcamp.create(req.body);
 
   res.status(201).json({ success: true, data: bootcampRecord });
 });
@@ -51,12 +50,14 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/bootcamps/:id
 // @access    Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcampRecord = await updateRecord(bootcamp, {
-    // TODO: returns old value, not new ??
-    payload: req.body,
-    id: req.params.id,
-    options: { new: true, runValidators: true },
-  });
+  const bootcampRecord = await Bootcamp.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   if (!bootcampRecord) {
     return next(
@@ -71,7 +72,7 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @route     DELETE /api/v1/bootcamp/:id
 // @access    Public
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcampRecord = await deleteRecord(bootcamp, { payload: req.body });
+  const bootcampRecord = await Bootcamp.findByIdAndDelete(req.params.id);
 
   if (!bootcampRecord) {
     return next(
