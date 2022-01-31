@@ -7,13 +7,7 @@ const Bootcamp = require('../models/Bootcamp');
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  console.log(req.query);
-
-  const bootcamps = await Bootcamp.find(req.query).populate('courses');
-
-  res
-    .status(200)
-    .json({ success: true, count: bootcamps.length, data: bootcamps });
+  res.status(200).json(res.advancedResults);
 });
 
 // @desc      Get single bootcamps
