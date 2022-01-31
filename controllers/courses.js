@@ -7,8 +7,8 @@ const {
   updateRecord,
   deleteRecord,
 } = require('../models/modelsApi');
-const { modelKeys } = require('../models/const');
-const { course } = modelKeys;
+const Course = require('../models/Course');
+const Bootcamp = require('../models/Bootcamp');
 
 // @desc      Get all courses
 // @route     GET /api/v1/courses
@@ -16,24 +16,31 @@ const { course } = modelKeys;
 // @access    Public
 exports.getCourses = asyncHandler(async (req, res, next) => {
   console.log(req.query);
-  let options = {};
+  let query;
 
   if (req.params.bootcampId) {
-    options = { query: { bootcamp: req.params.bootcampId } };
+    query = Course.find({ bootcamp: req.params.bootcampId });
+  } else {
+    // .populate('bootcamp') will return all bootcamp data
+    query = Course.find().populate({
+      path: 'bootcamp',
+      select: 'name description',
+    });
   }
 
-  const courses = await findAll(course, options);
-
-  // const bootcamps = await findAll(course, { query: req.query });
+  const courses = await query;
 
   res.status(200).json({ success: true, count: courses.length, data: courses });
 });
 
-// @desc      Get single bootcamps
-// @route     GET /api/v1/bootcamps/:id
+// @desc      Get single course
+// @route     GET /api/v1/courses/:id
 // @access    Public
 exports.getCourse = asyncHandler(async (req, res, next) => {
-  const courseRecord = await findRecord(course, { id: req.params.id });
+  const courseRecord = await Course.findById(req.params.id).populate({
+    path: 'bootcamp',
+    select: 'name description',
+  });
 
   if (!courseRecord) {
     return next(

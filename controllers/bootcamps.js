@@ -1,12 +1,5 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middlewares/async');
-const {
-  createRecord,
-  findRecord,
-  findAll,
-  updateRecord,
-  deleteRecord,
-} = require('../models/modelsApi');
 const Bootcamp = require('../models/Bootcamp');
 
 // @desc      Get all bootcamps
@@ -15,7 +8,7 @@ const Bootcamp = require('../models/Bootcamp');
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   console.log(req.query);
 
-  const bootcamps = await Bootcamp.find(req.query);
+  const bootcamps = await Bootcamp.find(req.query).populate('courses');
 
   res
     .status(200)
@@ -72,7 +65,9 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @route     DELETE /api/v1/bootcamp/:id
 // @access    Public
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcampRecord = await Bootcamp.findByIdAndDelete(req.params.id);
+  // findByIdAndDelete will not trigger 'remove' middleware in BootcampSchema.pre()
+  // Need to use findById and then call remove() on returned record
+  const bootcampRecord = await Bootcamp.findById(req.params.id);
 
   if (!bootcampRecord) {
     return next(
@@ -82,6 +77,8 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
       )
     );
   }
+
+  bootcampRecord.remove();
 
   res.status(200).json({ success: true, data: {} });
 });
