@@ -1,7 +1,7 @@
-const advancedResults = (model, populate) => async (req, res, next) => {
+const advancedResults = (model, populateOptions) => async (req, res, next) => {
   let query;
 
-  const reqQuery = { ...query };
+  const reqQuery = { ...req.query };
 
   const removeFields = ['select', 'sort', 'page', 'limit'];
 
@@ -14,7 +14,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     (match) => `$${match}`
   );
 
-  query = model.find(JSON.parse(queryString)).populate('');
+  query = model.find(JSON.parse(queryString));
 
   // Select
   if (req.query.select) {
@@ -39,8 +39,8 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  if (populate) {
-    query = query.populate(populate);
+  if (populateOptions) {
+    query = query.populate(populateOptions);
   }
 
   // Execute query
@@ -51,6 +51,13 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   if (endIndex < total) {
     pagination.next = {
       page: page + 1,
+      limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
       limit,
     };
   }
